@@ -1,0 +1,78 @@
+---
+const pages = [
+    { label: "Incio", href: "/", especial: false },
+    { label: "Otro", href: "#", especial: false },
+    { label: "Inscribirme",  href: "/inscribirme", especial: true }
+]
+---
+
+<header class="header">
+    <nav class="width-page nav-bar">
+        <strong>EETP 275</strong>
+        <ul class="nav-bar-list">
+            {pages.map((page) => (
+                <li class={`nav-bar-list_item ${page.especial && 'especial'}`}>
+                    <a href={page.href}>{page.label}</a>    
+                </li>
+            ))}
+        </ul>
+    </nav>
+</header>
+
+<style>
+    .header {
+        height: 100vh;
+        position: relative;
+        background-image: url("/assets/img/header-background.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center top;
+        mask-image: linear-gradient(to bottom, black, transparent);
+
+    }
+
+    .nav-bar {
+        z-index: 10;
+        display: flex; 
+        align-items: center;
+        justify-content: space-between;
+        font-size: var(--font-size-small);
+    }
+
+    .nav-bar-list {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nav-bar-list_item {
+        padding: 10px;
+        text-decoration: none;
+        color: var(--dark-color);
+        cursor: pointer;
+    }
+
+    .nav-bar-list_item.especial {
+        background: var(--primary-color);
+        color: var(--light-color);
+        transition: background .3s ease-in-out;
+    }
+
+    .nav-bar-list_item.especial:hover {
+        background: var(--primary-color-dark);
+    }
+
+    .nav-bar-list_item a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .header-background {
+        position: absolute;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        object-fit: cover;
+    }
+</style>
