@@ -1,0 +1,184 @@
+---
+import Button from "./Button.astro";
+import ArrowLeftIcon from "../icons/arrowLeft.astro";
+import ArrowRigthIcon from "../icons/arrowRight.astro";
+
+const { items } = Astro.props;
+const sliderWidth = items.length * 100;
+---
+
+<div class="container">
+  <div class="slider" style={`width: ${sliderWidth}%`} id="slider">
+    {
+      items.map((item) => (
+        <div
+          class="slider__section"
+          style={`background-image: url(${item.image})`}
+        >
+          <div class="slider__content">
+            <h1>{item.title}</h1>
+            <p>{item.description}</p>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="controls">
+    <div id="btnPrev">
+      <Button type="normal-dark-rounded">
+        <ArrowLeftIcon />
+      </Button>
+    </div>
+    <div class="controls__pointer">
+      {items.map(() => <div class={`controls__pointer-item`} />)}
+    </div>
+    <div id="btnNext">
+      <Button type="normal-dark-rounded">
+        <ArrowRigthIcon />
+      </Button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .container {
+    gap: 10px;
+    width: 50%;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  .slider {
+    display: flex;
+    height: 500px;
+    margin-left: -100%;
+  }
+
+  .slider__section {
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    border-radius: 10px;
+  }
+
+  .slider__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background: var(--opacity-color);
+    opacity: 0;
+    visibility: hidden;
+    border-radius: 10px;
+    color: var(--light-color);
+    transition: all 0.5s ease-in-out;
+  }
+
+  .slider__section:hover .slider__content {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 10px auto;
+  }
+
+  .controls__pointer {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .controls__pointer-item {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--gray-color);
+    transition: all 0.5s ease-in-out;
+  }
+
+  .controls__pointer-item.active {
+    background-color: var(--dark-color);
+  }
+</style>
+
+<script>
+  const slider = document.getElementById("slider");
+  let controlsPointers = document.querySelectorAll(".controls__pointer-item");
+  let sliderSections = slider.querySelectorAll(".slider__section");
+  let sliderSectionsLast = sliderSections[sliderSections.length - 1];
+
+  let sliderPosition = 0;
+  const btnNext = document.getElementById("btnNext");
+  const btnPrev = document.getElementById("btnPrev");
+
+  slider.insertAdjacentElement("afterbegin", sliderSectionsLast);
+
+  function next() {
+    if (sliderPosition < sliderSections.length - 1) {
+      sliderPosition++;
+    } else {
+      sliderPosition = 0;
+    }
+    control(sliderPosition);
+
+    let sliderSectionFirst = document.querySelectorAll(".slider__section")[0];
+    slider.style.marginLeft = "-200%";
+    slider.style.transition = "all 0.5s";
+    setTimeout(function () {
+      slider.style.transition = "none";
+      slider.insertAdjacentElement("beforeend", sliderSectionFirst);
+      slider.style.marginLeft = "-100%";
+    }, 500);
+  }
+
+  function prev() {
+    // Manera de controlar la posición
+    if (sliderPosition <= 0) {
+      sliderPosition = sliderSections.length - 1;
+    } else {
+      sliderPosition--;
+    }
+    control(sliderPosition);
+
+    let sliderSection = document.querySelectorAll(".slider__section");
+    let sliderSectionLast = sliderSection[sliderSection.length - 1];
+    slider.style.marginLeft = "0";
+    slider.style.transition = "all 0.5s";
+    setTimeout(function () {
+      slider.style.transition = "none";
+      slider.insertAdjacentElement("afterbegin", sliderSectionLast);
+      slider.style.marginLeft = "-100%";
+    }, 500);
+  }
+
+  function control(index) {
+    controlsPointers.forEach((control) => {
+      control.classList.remove("active");
+    });
+
+    controlsPointers[index].classList.add("active");
+  }
+
+  control(0);
+
+  btnNext.addEventListener("click", () => {
+    next();
+  });
+
+  btnPrev.addEventListener("click", () => {
+    prev();
+  });
+</script>
