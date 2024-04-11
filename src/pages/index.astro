@@ -1,8 +1,19 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import Hero from "../components/sections/Hero.astro";
 ---
 
 <Layout title="Welcome to Astro.">
-	<p>Hola como te va</p>
+  <div class="main-content">
+    <Hero />
+  </div>
 </Layout>
 
+<style>
+  .main-content {
+    margin: 100px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+const { type } = Astro.props;
+let styleType;
+
+switch (type) {
+  case "normal":
+    styleType = "btn normal";
+    break;
+  case "normal-dark":
+    styleType = "btn normal dark";
+    break;
+  case "normal-dark-rounded":
+    styleType = "btn normal dark rounded";
+    break;
+  case "normal-rounded":
+    styleType = "btn normal rounded";
+    break;
+  case "invested":
+    styleType = "btn invested";
+    break;
+  default:
+    styleType = "btn normal";
+}
+---
+
+<button class={styleType}>
+  <slot />
+</button>
+
+<style>
+  .btn {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .normal {
+    background-color: var(--primary-color-dark);
+    color: var(--light-color);
+    transition: all 0.5s ease-in-out;
+  }
+
+  .normal:hover {
+    background: var(--primary-color);
+  }
+
+  .rounded {
+    border-radius: 10px;
+    color: var(--light-color);
+  }
+
+  .invested {
+    background-color: var(--light-color);
+    color: var(--primary-color);
+  }
+
+  .dark {
+    background-color: var(--dark-color);
+  }
+
+  .dark:hover {
+    color: var(--dark-color);
+  }
+</style>
